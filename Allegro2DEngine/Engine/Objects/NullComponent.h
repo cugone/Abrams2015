@@ -8,8 +8,8 @@ A2DE_BEGIN
 
 class NullComponent : a2de::IComponent {
 public:
-    NullComponent();
-    virtual ~NullComponent();
+    NullComponent() = default;
+    virtual ~NullComponent() = default;
 
     virtual void Update(double deltaTime) override;
 

@@ -52,8 +52,8 @@ Vector2D& Camera::GetPosition() {
 void Camera::SetPosition(const Vector2D& position) {
     double x = position.GetX();
     double y = position.GetY();
-    double hew = _world_area.GetHalfWidth();
-    double heh = _world_area.GetHalfHeight();
+	double hew = _world_area.GetHalfExtents().GetX();
+    double heh = _world_area.GetHalfExtents().GetY();
     double min_x = hew;
     double min_y = heh;
 
@@ -67,7 +67,7 @@ void Camera::SetPosition(const Vector2D& position) {
     if(x > max_x) x = max_x;
     if(y > max_y) y = max_y;
 
-    _world_area.SetPosition(x, y);
+	_world_area.SetPosition(a2de::Vector2D{ x, y });
 }
 
 const Vector2D& Camera::GetHalfExtents() const {

@@ -7,7 +7,7 @@
  **************************************************************************************************/
 #include "ADTForceGenerator.h"
 
-#include "../../Objects/ADTEntity.h"
+#include "../../a2de_objects.h"
 #include <algorithm>
 
 A2DE_BEGIN
@@ -31,15 +31,14 @@ ADTForceGenerator::~ADTForceGenerator() {
 
 bool ADTForceGenerator::RegisterBody(Entity* body) {
     if(body == nullptr) return false;
-    a2de::RigidBody* b = body->GetBody();
-    if(b == nullptr) return false;
+    auto b = body->GetComponent<a2de::PhysicsComponent>().body;
 
     std::list<Entity*>::iterator _iter = std::find(_subscribers.begin(), _subscribers.end(), body);
     if(_iter != _subscribers.end()) return false;
     _subscribers.push_back(body);
 
-    b->ClearForces();
-    b->ClearImpulses();
+    b.ClearForces();
+    b.ClearImpulses();
 
     return true;
 }
@@ -47,15 +46,14 @@ bool ADTForceGenerator::RegisterBody(Entity* body) {
 
 void ADTForceGenerator::UnregisterBody(Entity* body) {
     if(body == nullptr) return;
-    a2de::RigidBody* b = body->GetBody();
-    if(b == nullptr) return;
+    auto b = body->GetComponent<a2de::PhysicsComponent>().body;
 
     std::list<Entity*>::iterator _iter = std::find(_subscribers.begin(), _subscribers.end(), body);
     if(_iter == _subscribers.end()) return;
     _subscribers.erase(_iter);
 
-    b->ClearForces();
-    b->ClearImpulses();
+    b.ClearForces();
+    b.ClearImpulses();
 
 }
 

@@ -16,13 +16,12 @@ A2DE_BEGIN
 void DragForceGenerator::Update(double /*deltaTime*/) {
 
     if(_subscribers.empty()) return;
-    std::for_each(_subscribers.begin(), _subscribers.end(), [&](Entity* elem) {
-        if(elem == nullptr) return;
+    for(auto& s : _subscribers) {
+        if(s == nullptr) break;
 
-        a2de::RigidBody* body = elem->GetBody();
-        if(body == nullptr) return;
+        auto body = s->GetComponent<a2de::PhysicsComponent>().body;
 
-        Vector2D force = body->GetVelocity();
+        Vector2D force = body.GetVelocity();
 
         double dragCoeff = force.GetLength();
         if(a2de::Math::IsEqual(dragCoeff, 0.0)) return;
@@ -31,8 +30,8 @@ void DragForceGenerator::Update(double /*deltaTime*/) {
 
         a2de::Vector2D::Normalize(force);
         force *= (-dragCoeff);
-        body->ApplyForce(force, 0.0);
-    });
+        body.ApplyForce(force, 0.0);
+    }
 }
 
 DragForceGenerator::DragForceGenerator() : ADTForceGenerator(), _coefficients(0.0, 0.0) { /* DO NOTHING */ }

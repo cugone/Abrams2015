@@ -11,7 +11,10 @@
 #include "a2de_vals.h"
 #include "Objects/Entity.h"
 #include "Objects/IComponent.h"
+#include "Objects/DimensionsComponent.h"
 #include "Objects/NullComponent.h"
+#include "Objects/PhysicsComponent.h"
+#include "Objects/SpriteComponent.h"
 #include "Objects/TransformComponent.h"
 
 #endif

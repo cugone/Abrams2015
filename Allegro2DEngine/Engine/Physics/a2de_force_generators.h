@@ -10,10 +10,10 @@
 
 #include "../a2de_vals.h"
 #include "ForceGenerators/ADTForceGenerator.h"
-#include "ForceGenerators/CGravityForceGenerator.h"
-#include "ForceGenerators/CDragForceGenerator.h"
-#include "ForceGenerators/CSpringForceGenerator.h"
 #include "ForceGenerators/CCableForceGenerator.h"
+#include "ForceGenerators/CDragForceGenerator.h"
+#include "ForceGenerators/CGravityForceGenerator.h"
 #include "ForceGenerators/CRodForceGenerator.h"
+#include "ForceGenerators/CSpringForceGenerator.h"
 
 #endif // A2DE_FORCE_GENERATORS_H

@@ -10,8 +10,8 @@
 
 #include "a2de_vals.h"
 #include "Time/ADTtime.h"
-#include "Time/CTimer.h"
-#include "Time/CStopwatch.h"
 #include "Time/CAlarm.h"
+#include "Time/CStopwatch.h"
+#include "Time/CTimer.h"
 
 #endif

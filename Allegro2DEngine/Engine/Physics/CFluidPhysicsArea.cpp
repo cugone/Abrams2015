@@ -37,27 +37,25 @@ void FluidPhysicsArea::OnTick(Entity* object) {
 
     if(_gravity == nullptr) return;
     if(object == nullptr) return;
-    if(object->GetBody() == nullptr) return;
 
-    a2de::Rectangle bounding_box(object->GetBody()->GetBoundingRectangle()->GetTransform().GetPosition(), object->GetBody()->GetBoundingRectangle()->GetHalfExtents() * 2.0);
+    a2de::Rectangle bounding_box(object->GetComponent<TransformComponent>().transform.GetPosition(), object->GetComponent<DimensionsComponent>().dimensions);
 
-    a2de::Rectangle area_bounding_box(_area->GetBoundingRectangle()->GetTransform().GetPosition(), _area->GetBoundingRectangle()->GetHalfExtents() * 2.0);
+    a2de::Rectangle area_bounding_box(_area->GetCollisionShape()->GetPosition(), _area->GetCollisionShape()->GetHalfExtents());
 
     if(bounding_box.Intersects(area_bounding_box) == false) return;
 
     bool is_in_fluid = false;
-    a2de::Rectangle result;
-    bounding_box.Overlap(area_bounding_box, result, is_in_fluid);
-    if(is_in_fluid == false) return;
+    auto result = bounding_box.Overlap(area_bounding_box);
+    if(result.first == false) return;
 
-    double current_area = result.GetArea();
-    double mass = object->GetBody()->GetMass();
+    double current_area = result.second.GetArea();
+	double mass = object->GetComponent<PhysicsComponent>().body.GetMass();
     a2de::Vector2D gravityValue = _gravity->GetGravityValue();
 
     a2de::Vector2D current_weight(mass * gravityValue);
     a2de::Vector2D buoyancy(current_area * (_density / 1000.0) * -gravityValue);
 
-    object->GetBody()->ApplyImpulse(buoyancy + current_weight);
+	object->GetComponent<PhysicsComponent>().body.ApplyImpulse(buoyancy + current_weight);
 }
 
 void FluidPhysicsArea::OnExit(Entity* exited_object) {

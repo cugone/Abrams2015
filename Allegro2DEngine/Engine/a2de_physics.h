@@ -9,16 +9,17 @@
 #define A2DE_PHYSICS_H
 
 #include "a2de_vals.h"
-//#include "Physics/IUpdatable.h"
-//#include "Physics/CRigidBody.h"
-//#include "Physics/CRigidBodyState.h"
-//#include "Physics/CCamera.h"
+#include "Physics/a2de_force_generators.h"
+#include "Physics/CCamera.h"
+#include "Physics/CContactData.h"
+#include "Physics/CContactPair.h"
+#include "Physics/CFluidPhysicsArea.h"
+#include "Physics/CPhysicsArea.h"
+#include "Physics/CQuadTree.h"
+#include "Physics/CRigidBody.h"
+#include "Physics/CRigidBodyState.h"
+#include "Physics/CTrigger.h"
 #include "Physics/CWorld.h"
-//#include "Physics/CQuadTree.h"
-//#include "Physics/a2de_force_generators.h"
-//#include "Physics/CTrigger.h"
-//#include "Physics/CPhysicsArea.h"
-//#include "Physics/CFluidPhysicsArea.h"
-//#include "Physics/CContactPair.h"
+#include "Physics/IUpdatable.h"
 
 #endif

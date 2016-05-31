@@ -22,7 +22,7 @@
 #include "../Math/CSpline.h"
 #include "../Math/CTriangle.h"
 #include "../Math/CVertex.h"
-//#include "../Physics/IBoundingBox.h"
+
 #include "IRenderable.h"
 #include "CSprite.h"
 #include "../Objects/Entity.h"
@@ -118,11 +118,6 @@ void RenderManager::RenderObject(const Shape& shape, bool filled, ALLEGRO_BITMAP
     }
 }
 
-//void RenderManager::RenderObject(IBoundingBox* bounding_box) {
-//    if(bounding_box == nullptr) return;
-//    bounding_box->Draw(al_get_backbuffer(_display_context));
-//}
-//
 void RenderManager::RenderObject(IRenderable& renderable) {
     renderable.Render(al_get_backbuffer(_display_context));
 }
@@ -148,14 +143,6 @@ void RenderManager::RenderObjectAt(Shape& shape, const a2de::Vector2D& screen_po
     RenderObject(shape, filled);
     shape.SetPosition(old_pos);
 }
-
-//void RenderManager::RenderObjectAt(IBoundingBox* bounding_box, const a2de::Vector2D& screen_position) {
-//    if(bounding_box == nullptr) return;
-//    a2de::Vector2D old_pos(bounding_box->GetTransform().GetPosition());
-//    bounding_box->GetTransform().SetPosition(screen_position);
-//    bounding_box->Draw(al_get_backbuffer(_display_context));
-//    bounding_box->GetTransform().SetPosition(old_pos);
-//}
 
 
 A2DE_END

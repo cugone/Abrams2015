@@ -8,11 +8,12 @@
 #ifndef A2DE_CCAMERA_H
 #define A2DE_CCAMERA_H
 
+#include <iostream>
+#include <string>
+
 #include "../a2de_vals.h"
 #include "../Math/CVector2D.h"
 #include "../Math/CRectangle.h"
-#include <iostream>
-#include <string>
 
 struct ALLEGRO_BITMAP;
 

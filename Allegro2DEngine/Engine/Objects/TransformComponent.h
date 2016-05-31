@@ -10,14 +10,15 @@ A2DE_BEGIN
 
 class TransformComponent : a2de::IComponent {
 public:
-    TransformComponent();
-    virtual ~TransformComponent();
+    TransformComponent() = default;
+    virtual ~TransformComponent() = default;
 
     virtual void Update(double deltaTime) override;
 
+    a2de::Transform2D transform;
 protected:
 private:
-    a2de::Transform2D _transform;
+    
 };
 
 A2DE_END

@@ -81,9 +81,8 @@ void GravityForceGenerator::Update(double /*deltaTime*/) {
 
     std::for_each(_subscribers.begin(), _subscribers.end(), [&](Entity* elem) {
         if(elem == nullptr) return;
-        a2de::RigidBody* body = elem->GetBody();
-        if(body == nullptr) return;
-        body->ApplyForce(_gravity * body->GetGravityModifier() * body->GetMass(), 0.0);
+        auto body = elem->GetComponent<a2de::PhysicsComponent>().body;
+        body.ApplyForce(_gravity * body.GetGravityModifier() * body.GetMass(), 0.0);
     });
 }
 

@@ -16,12 +16,11 @@
 #include "GFX/CBitmapCache.h"
 #include "GFX/CDefaultAnimationHandler.h"
 #include "GFX/CGameWindow.h"
+#include "GFX/CRenderManager.h"
 #include "GFX/CSprite.h"
 #include "GFX/CSpriteHandler.h"
-#include "GFX/CRenderManager.h"
 #include "GFX/CTileSet.h"
+#include "GFX/IRenderable.h"
 #include "GFX/NullAnimationHandler.h"
-
-
 
 #endif

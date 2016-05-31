@@ -51,7 +51,7 @@ public:
      * <remarks>Casey Ugone, 10/16/2015.</remarks>
      * <param name="rrhs">[in,out] The rrhs.</param>
      **************************************************************************************************/
-    QuadTree(QuadTree&& rrhs);
+    QuadTree(QuadTree&& rrhs) = default;
 
     /**************************************************************************************************
      * <summary>Move assignment operator.</summary>
@@ -59,7 +59,22 @@ public:
      * <param name="rrhs">[in,out] The rrhs.</param>
      * <returns>A shallow copy of this QuadTree.</returns>
      **************************************************************************************************/
-    QuadTree& operator=(QuadTree&& rrhs);
+    QuadTree& operator=(QuadTree&& rrhs) = default;
+
+    /**************************************************************************************************
+    * <summary>Copy constructor.</summary>
+    * <remarks>Casey Ugone, 5/20/2013.</remarks>
+    * <param name="other">The other.</param>
+    **************************************************************************************************/
+    QuadTree(const QuadTree<T>& other) = delete;
+
+    /**************************************************************************************************
+    * <summary>Assignment operator.</summary>
+    * <remarks>Casey Ugone, 5/20/2013.</remarks>
+    * <param name="rhs">The right hand side.</param>
+    * <returns>A shallow copy of this object.</returns>
+    **************************************************************************************************/
+    QuadTree<T>& operator=(const QuadTree<T>& rhs) = delete;
 
     /**************************************************************************************************
      * <summary>Adds an element to the tree.</summary>
@@ -84,14 +99,6 @@ public:
      * <returns>true if it succeeds, false if it fails.</returns>
      **************************************************************************************************/
     bool Update(const T& elem);
-
-    /**************************************************************************************************
-     * <summary>Updates the given element.</summary>
-     * <remarks>Casey Ugone, 5/20/2013.</remarks>
-     * <param name="elem">The element.</param>
-     * <returns>true if it succeeds, false if it fails.</returns>
-     **************************************************************************************************/
-    bool Update(const T* elem);
 
     /**************************************************************************************************
      * <summary>Adds a range of elements.</summary>
@@ -166,11 +173,10 @@ public:
      * <summary>Queries a given area.</summary>
      * <remarks>Casey Ugone, 5/20/2013.</remarks>
      * <param name="area">The area.</param>
-     * <returns>.</returns>
+     * <returns>A vector of objects contained in the query.</returns>
      **************************************************************************************************/
-    const std::vector<T> Query(const a2de::Shape& area) const;
-    std::vector<T>& Query(const a2de::Shape& area);
-
+    std::vector<T> Query(const a2de::Shape& area);
+    
     /**************************************************************************************************
      * <summary>Gets the nodes by element.</summary>
      * <remarks>Casey Ugone, 5/20/2013.</remarks>
@@ -325,7 +331,6 @@ private:
      * <param name="node">[in,out] If non-null, the node.</param>
      * <returns>The elements.</returns>
      **************************************************************************************************/
-    const std::vector<T> GetElements(QuadTree<T>* node) const;
     std::vector<T> GetElements(QuadTree<T>* node);
 
     /**************************************************************************************************
@@ -345,8 +350,14 @@ private:
     bool Add_helper(const T& elem, std::true_type);
     bool Add_helper(const T& elem, std::false_type);
 
+    bool Remove_helper(const T& elem, std::true_type);
+    bool Remove_helper(const T& elem, std::false_type);
+
+    bool Update_helper(const T& elem, std::true_type);
+    bool Update_helper(const T& elem, std::false_type);
+
     /// <summary> The elements </summary>
-    std::vector<std::shared_ptr<T>> _elements;
+    std::vector<T> _elements;
     /// <summary> The bounds </summary>
     a2de::Rectangle _bounds;
     /// <summary> The parent </summary>
@@ -354,22 +365,6 @@ private:
     /// <summary> The children </summary>
     std::array<std::unique_ptr<QuadTree<T>>, 4> _children;
 
-    //DO NOT COPY!
-
-    /**************************************************************************************************
-     * <summary>Copy constructor.</summary>
-     * <remarks>Casey Ugone, 5/20/2013.</remarks>
-     * <param name="other">The other.</param>
-     **************************************************************************************************/
-    QuadTree(const QuadTree<T>& other) = delete;
-
-    /**************************************************************************************************
-     * <summary>Assignment operator.</summary>
-     * <remarks>Casey Ugone, 5/20/2013.</remarks>
-     * <param name="rhs">The right hand side.</param>
-     * <returns>A shallow copy of this object.</returns>
-     **************************************************************************************************/
-    QuadTree<T>& operator=(const QuadTree<T>& rhs) = delete;
 
 };
 
@@ -377,39 +372,19 @@ template<typename T>
 unsigned long QuadTree<T>::MAX_ELEMENTS = 2;
 
 template<typename T>
-std::size_t QuadTree<T>::MAX_CHILDREN = 4;
-
-
-template<typename T>
-QuadTree<T>::QuadTree(const a2de::Rectangle& bounds) : _elements(), _bounds(bounds), _parent(nullptr), _children(4) {
+QuadTree<T>::QuadTree(const a2de::Rectangle& bounds) : _elements(), _bounds(bounds), _parent(nullptr), _children() {
     DEFAULT_NODE_COLOR = al_map_rgb(255, 255, 255);
-    _bounds.SetColor(_bounds.GetColor());
-    _bounds.SetFill(false);
 }
 
 template<typename T>
-QuadTree<T>::QuadTree(QuadTree<T>* parent_node, const a2de::Rectangle& bounds) : _elements(), _bounds(bounds), _parent(parent_node), _children(4) {
+QuadTree<T>::QuadTree(QuadTree<T>* parent_node, const a2de::Rectangle& bounds) : _elements(), _bounds(bounds), _parent(parent_node), _children() {
     DEFAULT_NODE_COLOR = al_map_rgb(255, 255, 255);
-    _bounds.SetColor(_bounds.GetColor());
-    _bounds.SetFill(false);
 }
 
 template<typename T>
-QuadTree<T>::QuadTree(QuadTree<T>* parent_node, const a2de::Rectangle& bounds, std::vector<T>& elems) : _elements(elems), _bounds(bounds), _parent(parent_node), _children(4) {
+QuadTree<T>::QuadTree(QuadTree<T>* parent_node, const a2de::Rectangle& bounds, std::vector<T>& elems) : _elements(elems), _bounds(bounds), _parent(parent_node), _children() {
     DEFAULT_NODE_COLOR = al_map_rgb(255, 255, 255);
-    _bounds.SetColor(_bounds.GetColor());
-    _bounds.SetFill(false);
     Add(elems);
-}
-
-template<typename T>
-QuadTree<T>::QuadTree(QuadTree&& rrhs) {
-
-}
-
-template<typename T>
-QuadTree<T>::QuadTree& operator=(QuadTree&& rrhs) {
-
 }
 
 template<typename T>
@@ -461,7 +436,7 @@ std::vector<QuadTree<T>*> QuadTree<T>::GetNodesByLocation(a2de::Vector2D& loc) {
     if(_bounds.Intersects(loc)) {
         if(IsLeaf(this) == false) {
             std::vector<QuadTree<T>*> child_results;
-            for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
+            for(std::size_t i = 0; i < 4 /*MAX_CHILDREN*/; ++i) {
                 child_results = _children[i]->GetNodesByLocation(loc);
                 std::vector<QuadTree<T>*>::iterator b = child_results.begin();
                 std::vector<QuadTree<T>*>::iterator e = child_results.end();
@@ -508,26 +483,20 @@ std::vector<T> QuadTree<T>::GetAllElements() {
 
 template<typename T>
 std::vector<T> QuadTree<T>::GetElements(QuadTree<T>* node) {
-    class IsInTotal {
-    public:
-        IsInTotal(std::vector<T>* total_elements) : _total_elements(total_elements) { }
-        bool operator()(T& elem) {
-            return std::find(_total_elements->begin(), _total_elements->end(), elem) == _total_elements->end();
-        }
-    private:
-        std::vector<T>* _total_elements;
-    };
+
     std::vector<T> total_elements;
-    if(node == nullptr) return total_elements;
+    if(node == nullptr) return std::move(total_elements);
     if(IsLeaf(node)) return node->_elements;
-    for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
-        std::vector<T> c_elems(node->GetElements(node->_children[i]));
+    for(std::size_t i = 0; i < 4 /*MAX_CHILDREN*/; ++i) {
+        std::vector<T> c_elems(node->GetElements(node->_children[i].get()));
         std::size_t c_s = c_elems.size();
         for(std::size_t c = 0; c < c_s; ++c) {
-            std::copy_if(c_elems.begin(), c_elems.end(), std::back_inserter(total_elements), IsInTotal(&total_elements));
+			std::copy_if(c_elems.begin(), c_elems.end(), std::back_inserter(total_elements), [&total_elements](const T& elem)->bool {
+				return std::find(total_elements.begin(), total_elements.end(), elem) == total_elements.end();
+			});
         }
     }
-    return total_elements;
+	return std::move(total_elements);
 }
 template<typename T>
 void QuadTree<T>::QueryNode(QuadTree<T>* node, const a2de::Shape& area, std::vector<T>& selected_elements) {
@@ -537,15 +506,16 @@ void QuadTree<T>::QueryNode(QuadTree<T>* node, const a2de::Shape& area, std::vec
     if(node->_bounds.Intersects(area) == false) return;
 
     if(IsLeaf(node)) {
-        std::vector<T>::iterator b = node->_elements.begin();
-        std::vector<T>::iterator e = node->_elements.end();
-        for(std::vector<T>::iterator _iter = b; _iter != e; ++_iter) {
+		/*Should be of type: std::vector<std::shared_ptr<T>>::iterator */
+		auto b = node->_elements.begin();
+		auto e = node->_elements.end();
+        for(auto _iter = b; _iter != e; ++_iter) {
             selected_elements.push_back(*_iter);
         }
         return;
     }
-    for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
-        QueryNode(node->_children[i], area, selected_elements);
+    for(std::size_t i = 0; i < 4 /*MAX_CHILDREN*/; ++i) {
+        QueryNode((node->_children[i]).get(), area, selected_elements);
     }
 }
 
@@ -573,7 +543,9 @@ const ALLEGRO_COLOR& QuadTree<T>::GetNodeColor() {
 
 template<typename T>
 void QuadTree<T>::SetNodeColor(const ALLEGRO_COLOR& color) {
-    _bounds.SetColor(color);
+	for(auto& v : _bounds.GetVerticies()) {
+		v = a2de::Vertex{v.GetPosition(), v.GetUV(), color };
+	}
 }
 
 template<typename T>
@@ -585,7 +557,7 @@ template<typename T>
 unsigned long QuadTree<T>::NumberOfElementsInTree() {
     if(IsLeaf(this)) return _elements.size();
     unsigned long num_elements = 0;
-    for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
+    for(std::size_t i = 0; i < 4 /*MAX_CHILDREN*/; ++i) {
         num_elements += _children[i]->NumberOfElementsInTree();
     }
     return num_elements;
@@ -594,8 +566,8 @@ unsigned long QuadTree<T>::NumberOfElementsInTree() {
 template<typename T>
 unsigned long QuadTree<T>::Divisions() {
     if(IsLeaf(this)) return 0;
-    unsigned long num_divisions = MAX_CHILDREN;
-    for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
+    unsigned long num_divisions = 4 /*MAX_CHILDREN*/;
+    for(std::size_t i = 0; i < 4 /*MAX_CHILDREN*/; ++i) {
         num_divisions += _children[i]->Divisions();
     }
     return num_divisions;
@@ -606,7 +578,7 @@ unsigned long QuadTree<T>::Height() {
 
     if(IsLeaf(this)) return 0;
     unsigned long height = 1;
-    for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
+    for(std::size_t i = 0; i < 4 /*MAX_CHILDREN*/; ++i) {
         height += _children[i]->Height();
     }
     return height;
@@ -614,7 +586,7 @@ unsigned long QuadTree<T>::Height() {
 
 template<typename T>
 bool QuadTree<T>::IsLeaf(QuadTree<T>* node) {
-    for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
+    for(std::size_t i = 0; i < 4 /*MAX_CHILDREN*/; ++i) {
         if(node->_children[i] == nullptr) continue;
         return false;
     }
@@ -626,7 +598,7 @@ void QuadTree<T>::DrawTopToBottom(ALLEGRO_BITMAP* dest) {
     if(dest == nullptr) return;
     _bounds.Render(dest, _bounds.GetColor(), _bounds.IsFilled());
     if(IsLeaf(this) == false) {
-        for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
+        for(std::size_t i = 0; i < 4 /*MAX_CHILDREN*/; ++i) {
             _children[i]->DrawTopToBottom(dest);
         }
     }
@@ -636,7 +608,7 @@ template<typename T>
 void QuadTree<T>::DrawBottomToTop(ALLEGRO_BITMAP* dest) {
     if(dest == nullptr) return;
     if(IsLeaf(this) == false) {
-        for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
+        for(std::size_t i = 0; i < 4 /*MAX_CHILDREN*/; ++i) {
             _children[i]->DrawBottomToTop(dest);
         }
     }
@@ -653,8 +625,8 @@ template<typename T>
 void QuadTree<T>::SubDivide() {
     try {
         //Define 
-        double half_width = _bounds.GetHalfWidth();
-        double half_height = _bounds.GetHalfHeight();
+		double half_width = _bounds.GetHalfExtents().GetX();
+		double half_height = _bounds.GetHalfExtents().GetY();
         if(a2de::Math::ToScreenScale(half_width) <= 1.0 || a2de::Math::ToScreenScale(half_height) <= 1.0) return;
 
         a2de::Vector2D dimensions(half_width, half_height);
@@ -662,33 +634,28 @@ void QuadTree<T>::SubDivide() {
         a2de::Vector2D ur_pos(ul_pos + a2de::Vector2D(half_width, 0.0));
         a2de::Vector2D ll_pos(ul_pos + a2de::Vector2D(0.0, half_height));
         a2de::Vector2D lr_pos(ul_pos + dimensions);
-        ALLEGRO_COLOR color = _bounds.GetColor();
-        bool filled = _bounds.IsFilled();
 
-        a2de::Rectangle ul(ul_pos, dimensions / 2.0, color, filled);
-        a2de::Rectangle ur(ur_pos, dimensions / 2.0, color, filled);
-        a2de::Rectangle ll(ll_pos, dimensions / 2.0, color, filled);
-        a2de::Rectangle lr(lr_pos, dimensions / 2.0, color, filled);
+        a2de::Rectangle ul(ul_pos, dimensions / 2.0);
+        a2de::Rectangle ur(ur_pos, dimensions / 2.0);
+        a2de::Rectangle ll(ll_pos, dimensions / 2.0);
+        a2de::Rectangle lr(lr_pos, dimensions / 2.0);
 
-        _children[CHILD_UPPER_LEFT] = new QuadTree(this, ul);
-        _children[CHILD_UPPER_RIGHT] = new QuadTree(this, ur);
-        _children[CHILD_LOWER_LEFT] = new QuadTree(this, ll);
-        _children[CHILD_LOWER_RIGHT] = new QuadTree(this, lr);
+		_children[CHILD_UPPER_LEFT].reset(new a2de::QuadTree<T>(this, ul));
+        _children[CHILD_UPPER_RIGHT].reset(new a2de::QuadTree<T>(this, ur));
+        _children[CHILD_LOWER_LEFT].reset(new a2de::QuadTree<T>(this, ll));
+        _children[CHILD_LOWER_RIGHT].reset(new a2de::QuadTree<T>(this, lr));
 
         //Give elements of mine to children, may or may not accept them.
-        for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
-            std::vector<T>::iterator b = _elements.begin();
-            std::vector<T>::iterator e = _elements.end();
-            for(std::vector<T>::iterator _iter = b; _iter != e; ++_iter) {
-                if(_children[i]->Add(*_iter)) continue;
+        for(auto& c : _children) {
+            for(auto& e : _elements) {
+                if(c->Add(e)) continue;
             }
         }
 
     } catch(...) {
-        for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
+        for(std::size_t i = 0; i < 4 /*MAX_CHILDREN*/; ++i) {
             if(_children[i]) {
-                delete _children[i];
-                _children[i] = nullptr;
+                _children[i].reset(nullptr);
             }
         }
     }
@@ -697,19 +664,29 @@ void QuadTree<T>::SubDivide() {
 template<typename T>
 void QuadTree<T>::UnSubDivide() {
 
-    for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
-        QuadTree<T>* curNode = _children[i];
+    for(std::size_t i = 0; i < 4 /*MAX_CHILDREN*/; ++i) {
+        QuadTree<T>* curNode = _children[i].get();
         QuadTree<T>* curNodeParent = curNode->_parent;
-        for(std::vector<T>::iterator _iter = curNode->_elements.begin(); _iter != curNode->_elements.end(); ++_iter) {
+        for(auto _iter = curNode->_elements.begin(); _iter != curNode->_elements.end(); ++_iter) {
             curNodeParent->_elements.push_back(*_iter);
         }
-        delete _children[i];
-        _children[i] = nullptr;
+		_children[i].reset(nullptr);
     }
 }
 
 template<typename T>
+bool QuadTree<T>::Add(const T& elem) {
+    return Add_helper(elem, std::is_pointer<T>());
+}
+
+template<typename T>
 bool QuadTree<T>::Add_helper(const T& elem, std::true_type) {
+    if(elem == nullptr) return false;
+    Add_helper(*elem, std::false_type);
+}
+
+template<typename T>
+bool QuadTree<T>::Add_helper(const T& elem, std::false_type) {
 
     bool intersects_result = _bounds.Intersects(elem);
     if(intersects_result == false) {
@@ -719,7 +696,7 @@ bool QuadTree<T>::Add_helper(const T& elem, std::true_type) {
     if(IsLeaf(this) == false) {
         bool result = false;
         for(auto& c : _children) {
-            result |= _children[i]->Add(elem);
+            result |= c->Add(elem);
         }
         return result;
     }
@@ -732,39 +709,33 @@ bool QuadTree<T>::Add_helper(const T& elem, std::true_type) {
 }
 
 template<typename T>
-bool QuadTree<T>::Add_helper(const T& elem, std::false_type) {
-    if(elem == nullptr) return false;
-    Add(*elem);
-}
-
-template<typename T>
-bool QuadTree<T>::Add(const T& elem) {
-    return Add_helper(elem, std::is_pointer<T>()::type);
-}
-
-template<typename T>
 bool QuadTree<T>::Remove(const T& elem) {
+    return Remove_helper(elem, std::is_pointer<T>());
+}
 
-    if(ptr(elem) && _bounds.Intersects(*ptr(elem)) == false) return false;
+template<typename T>
+bool QuadTree<T>::Remove_helper(const T& elem, std::false_type) {
+
+    if(_bounds.Intersects(elem) == false) return false;
 
     if(IsLeaf(this)) {
         return RemoveElement(elem);
     }
 
-    for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
+    for(std::size_t i = 0; i < 4 /*MAX_CHILDREN*/; ++i) {
         _children[i]->Remove(elem);
     }
 
     bool all_children_are_leaves = true;
-    for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
-        if(IsLeaf(_children[i])) continue;
+    for(std::size_t i = 0; i < 4 /*MAX_CHILDREN*/; ++i) {
+        if(IsLeaf(_children[i].get())) continue;
         all_children_are_leaves = false;
         break;
     }
 
     if(all_children_are_leaves) {
         unsigned long elements_in_children = 0;
-        for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
+        for(std::size_t i = 0; i < 4 /*MAX_CHILDREN*/; ++i) {
             elements_in_children += _children[i]->NumberOfElementsInTree();
         }
         if(elements_in_children < MAX_ELEMENTS) {
@@ -772,26 +743,29 @@ bool QuadTree<T>::Remove(const T& elem) {
         }
     }
     return true;
+
 }
 
 template<typename T>
-bool QuadTree<T>::Remove(const T* elem) {
-    return Remove(*elem);
+bool QuadTree<T>::Remove_helper(const T& elem, std::true_type) {
+    if(elem == nullptr) return false;
+    Remove(*elem);
 }
 
 template<typename T>
 bool QuadTree<T>::Update(const T& elem) {
-    if(Remove(elem)) {
-        if(Add(elem)) {
-            return true;
-        }
-    }
-    return false;
+    return Update_helper(elem, typename std::is_pointer<T>()::type);
 }
 
 template<typename T>
-bool QuadTree<T>::Update(const T* elem) {
-    return Update(*elem);
+bool QuadTree<T>::Update_helper(const T& elem, std::true_type) {
+    if(elem == nullptr) return false;
+    Update(*elem);
+}
+
+template<typename T>
+bool QuadTree<T>::Update_helper(const T& elem, std::false_type) {
+    return Remove(elem) && Add(elem);
 }
 
 template<typename T>
@@ -807,9 +781,9 @@ void QuadTree<T>::Update(std::vector<T>& elem) {
 template<typename T>
 bool QuadTree<T>::RemoveElement(const T& elem) {
 
-    std::vector<T>::iterator b = _elements.begin();
-    std::vector<T>::iterator e = _elements.end();
-    std::vector<T>::iterator _iter = b;
+    auto b = _elements.begin();
+	auto e = _elements.end();
+	auto _iter = b;
     _iter = std::find(b, e, elem);
     if(_iter != _elements.end()) {
         _elements.erase(_iter);
@@ -831,7 +805,7 @@ void QuadTree<T>::Clear(QuadTree<T>* node) {
         return;
     }
     
-    for(std::size_t i = 0; i < MAX_CHILDREN; ++i) {
+    for(std::size_t i = 0; i < 4 /*MAX_CHILDREN*/; ++i) {
         node->_children[i]->Clear();
     }
     node->UnSubDivide();

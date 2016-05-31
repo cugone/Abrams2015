@@ -21,8 +21,11 @@ void SpringForceGenerator::Update(double /*deltaTime*/) {
     auto second_body = _spring_ends.second;
     if(first_body == nullptr || second_body == nullptr) return;
 
-    a2de::Vector2D left_direction(first_body->GetPosition() - second_body->GetPosition());
-    a2de::Vector2D right_direction(second_body->GetPosition() - first_body->GetPosition());
+    auto fb_pos = first_body->GetComponent<a2de::TransformComponent>().transform.GetPosition();
+    auto sb_pos = second_body->GetComponent<a2de::TransformComponent>().transform.GetPosition();
+
+    a2de::Vector2D left_direction(fb_pos - sb_pos);
+    a2de::Vector2D right_direction(sb_pos - fb_pos);
 
     double left_magnitude = left_direction.GetLength();
     if(a2de::Math::IsEqual(std::abs(left_magnitude), _rest_length) == false) {
@@ -41,9 +44,9 @@ void SpringForceGenerator::Update(double /*deltaTime*/) {
     }
 
     //Apply Right Force to Left Object.
-    first_body->ApplyImpulse(right_direction * right_magnitude);
+    first_body->GetComponent<a2de::PhysicsComponent>().body.ApplyImpulse(right_direction * right_magnitude);
     //Apply Left Force to Right Object.
-    second_body->ApplyImpulse(left_direction * left_magnitude);
+    second_body->GetComponent<a2de::PhysicsComponent>().body.ApplyImpulse(left_direction * left_magnitude);
 
 }
 

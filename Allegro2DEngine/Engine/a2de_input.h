@@ -9,12 +9,12 @@
 #define A2DE_INPUT_H
 
 #include "a2de_vals.h"
-#include "Input/CInputHandler.h"
-#include "Input/CKeyboardInputHandler.h"
-#include "Input/CMouseInputHandler.h"
-#include "Input/CJoystickInputHandler.h"
 #include "Input/CDisplayInputHandler.h"
-#include "Input/CMouse.h"
+#include "Input/CInputHandler.h"
 #include "Input/CJoystick.h"
+#include "Input/CJoystickInputHandler.h"
+#include "Input/CKeyboardInputHandler.h"
+#include "Input/CMouse.h"
+#include "Input/CMouseInputHandler.h"
 
 #endif

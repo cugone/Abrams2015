@@ -16,10 +16,10 @@
 #include "a2de_graphics.h"
 #include "a2de_input.h"
 #include "a2de_math.h"
-//#include "a2de_messages.h"
-//#include "a2de_objects.h"
+#include "a2de_messages.h"
+#include "a2de_objects.h"
 #include "a2de_physics.h"
-//#include "a2de_time.h"
+#include "a2de_time.h"
 
 
 #endif

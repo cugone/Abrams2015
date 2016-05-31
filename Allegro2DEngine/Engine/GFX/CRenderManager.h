@@ -19,7 +19,6 @@ A2DE_BEGIN
 class Entity;
 class Sprite;
 class Shape;
-class IBoundingBox;
 class IRenderable;
 
 //TODO: Uncomment RenderManager functions after testing window.
@@ -61,13 +60,6 @@ public:
      * <param name="filled">true if filled.</param>
      **************************************************************************************************/
     void RenderObject(const Shape& shape, bool filled = false, ALLEGRO_BITMAP* texture = nullptr);
-//
-//    /**************************************************************************************************
-//     * <summary>Renders the object described by bounding_box.</summary>
-//     * <remarks>Casey Ugone, 10/25/2014.</remarks>
-//     * <param name="bounding_box">[in,out] If non-null, the bounding box.</param>
-//     **************************************************************************************************/
-//    void RenderObject(IBoundingBox* bounding_box);
 
     /**************************************************************************************************
      * <summary>Renders the object described by drawable.</summary>
@@ -100,15 +92,7 @@ public:
      * <param name="filled">         true if filled.</param>
      **************************************************************************************************/
     void RenderObjectAt(Shape& shape, const a2de::Vector2D& screen_position, bool filled = false);
-
-//    /**************************************************************************************************
-//     * <summary>Renders the bounding box at the specified location.</summary>
-//     * <remarks>Casey Ugone, 10/25/2014.</remarks>
-//     * <param name="bounding_box">   [in,out] If non-null, the bounding box.</param>
-//     * <param name="screen_position">The screen position.</param>
-//     **************************************************************************************************/
-//    void RenderObjectAt(IBoundingBox* bounding_box, const a2de::Vector2D& screen_position);
-//
+	
 protected:
 
 private:

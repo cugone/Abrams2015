@@ -7,10 +7,8 @@
  **************************************************************************************************/
 #include "CRigidBodyState.h"
 
-#include "../Math/CMiscMath.h"
 #include <numeric>
 #include <algorithm>
-#include "../Math/CShape.h"
 #include <string>
 #include <cassert>
 
@@ -20,13 +18,15 @@
 #include "../Math/CCircle.h"
 #include "../Math/CEllipse.h"
 #include "../Math/CLine.h"
+#include "../Math/CMiscMath.h"
 #include "../Math/CPoint.h"
 #include "../Math/CPolygon.h"
 #include "../Math/CRectangle.h"
 #include "../Math/CSector.h"
+#include "../Math/CShape.h"
 #include "../Math/CSpline.h"
 #include "../Math/CTriangle.h"
-#include "../Math/CShape.h"
+
 
 A2DE_BEGIN
 
@@ -34,13 +34,13 @@ const double State::DEFAULT_DAMPER_VALUE = 0.9999;
 
 State::State(double mass, const Vector2D& gravMod, const Vector2D& position, const Vector2D& velocity, const PhysicsMaterial& material_properties)
     : _mass(mass), _gravMod(gravMod), _position(position), _velocity(velocity), _acceleration(0.0, 0.0), _forces(), _impulses(), _active(false), _mat(material_properties), _collision_shape(nullptr), _density(0.0), _damper(DEFAULT_DAMPER_VALUE) {
-    SetCollisionShape(_collision_shape);
+    SetCollisionShape(_collision_shape.get());
     _density = CalculateDensity();
 }
 
 State::State(const State& other)
      : _mass(other._mass), _gravMod(other._gravMod), _position(other._position), _velocity(other._velocity), _acceleration(other._acceleration), _forces(other._forces), _impulses(other._impulses), _active(other._active), _mat(other._mat), _collision_shape(nullptr), _density(0.0), _damper(DEFAULT_DAMPER_VALUE) {
-    SetCollisionShape(other._collision_shape);
+    SetCollisionShape(other._collision_shape.get());
     _density = CalculateDensity();
 }
 
@@ -56,7 +56,7 @@ State& State::operator=(const State& rhs) {
     this->_impulses = rhs._impulses;
     this->_active = rhs._active;
     this->_mat = rhs._mat;
-    SetCollisionShape(rhs._collision_shape);
+    SetCollisionShape(rhs._collision_shape.get());
     this->_density = CalculateDensity();
     this->_damper = rhs._damper;
     return *this;
@@ -73,7 +73,6 @@ const Vector2D& State::GetGravityModifier() const { return _gravMod; }
 Vector2D& State::GetGravityModifier() { return const_cast<a2de::Vector2D&>(static_cast<const State&>(*this).GetGravityModifier()); }
 
 void State::SetGravityModifier(const Vector2D& gravity_modifier) { _gravMod = gravity_modifier; }
-void State::SetGravityModifier(double x, double y) { SetGravityModifier(Vector2D(x, y)); }
 
 const Vector2D& State::GetPosition() const { return _position; }
 Vector2D& State::GetPosition() { return const_cast<a2de::Vector2D&>(static_cast<const State&>(*this).GetPosition()); }
@@ -83,39 +82,25 @@ void a2de::State::SetPosition(const Vector2D& position) {
     if(_collision_shape) _collision_shape->SetPosition(position);
 }
 
-Vector2D State::GetVelocity() const { return _velocity; }
-Vector2D State::GetVelocity() { return static_cast<const State&>(*this).GetVelocity(); }
+const Vector2D& a2de::State::GetVelocity() const { return _velocity; }
+Vector2D& State::GetVelocity() { return const_cast<a2de::Vector2D&>(static_cast<const State&>(*this).GetVelocity()); }
 
 void State::SetVelocity(const Vector2D& velocity) { _velocity = velocity; }
 
-a2de::Vector2D State::GetAcceleration() const { return _acceleration; }
-a2de::Vector2D State::GetAcceleration() { return static_cast<const State&>(*this).GetAcceleration(); }
-
-double State::GetXAcceleration() const { return _acceleration.GetX(); }
-double State::GetXAcceleration() { return static_cast<const State&>(*this).GetXAcceleration(); }
-void State::SetXAcceleration(double x) { SetAcceleration(x, _acceleration.GetY()); }
-
-double State::GetYAcceleration() const { return _acceleration.GetY(); }
-double State::GetYAcceleration() { return static_cast<const State&>(*this).GetYAcceleration(); }
-void State::SetYAcceleration(double y) { SetAcceleration(_acceleration.GetX(), y); }
+const a2de::Vector2D& a2de::State::GetAcceleration() const { return _acceleration; }
+a2de::Vector2D& State::GetAcceleration() { return const_cast<a2de::Vector2D&>(static_cast<const State&>(*this).GetAcceleration()); }
 
 void State::SetAcceleration(const Vector2D& acceleration) { _acceleration = acceleration; }
-void State::SetAcceleration(double x, double y) { SetAcceleration(Vector2D(x, y)); }
+
 
 void State::ApplyForce(const Vector2D& force, double duration) {
     if(duration < 0.0) return;
     _forces.push_back(std::make_pair(force, duration));
 }
-void State::ApplyForce(double x, double y, double duration) { ApplyForce(Vector2D(x, y), duration); }
-void State::ApplyXForce(double x, double duration) { ApplyForce(x, 0.0, duration); }
-void State::ApplyYForce(double y, double duration) { ApplyForce(0.0, y, duration); }
 
 void State::ApplyImpulse(const Vector2D& impulse) {
     _impulses.push_back(impulse);
 }
-void State::ApplyImpulse(double x, double y) { ApplyImpulse(Vector2D(x, y)); }
-void State::ApplyXImpulse(double x) { ApplyImpulse(x, 0.0); }
-void State::ApplyYImpulse(double y) { ApplyImpulse(0.0, y); }
 
 void State::ClearForces() {
     _forces.clear();
@@ -230,16 +215,15 @@ Shape* State::GetCollisionShape() {
 }
 
 const Shape* State::GetCollisionShape() const {
-    return _collision_shape;
+    return _collision_shape.get();
 }
 
 void State::SetCollisionShape(Shape* shape) {
-    delete _collision_shape;
-    _collision_shape = shape;
+	_collision_shape.reset(shape);
 }
 
 State::~State() {
-    delete _collision_shape;
+	_collision_shape.reset(nullptr);
 }
 
 double State::GetDamper() const {

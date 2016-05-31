@@ -8,10 +8,12 @@
 #ifndef A2DE_CRIGIDBODYSTATE_H
 #define A2DE_CRIGIDBODYSTATE_H
 
+#include <list>
+#include <memory>
+
 #include "../a2de_vals.h"
 #include "../Math/CVector2D.h"
 #include "IUpdatable.h"
-#include <list>
 #include "../Math/CRectangle.h"
 
 A2DE_BEGIN
@@ -197,14 +199,14 @@ class State : public IUpdatable {
      * <remarks>Casey Ugone, 9/3/2012.</remarks>
      * <returns>The position.</returns>
      **************************************************************************************************/
-    Vector2D& GetPosition();
-
-    /**************************************************************************************************
-     * <summary>Gets the position.</summary>
-     * <remarks>Casey Ugone, 9/3/2012.</remarks>
-     * <returns>The position.</returns>
-     **************************************************************************************************/
     const Vector2D& GetPosition() const;
+
+	/**************************************************************************************************
+	* <summary>Gets the position.</summary>
+	* <remarks>Casey Ugone, 9/3/2012.</remarks>
+	* <returns>The position.</returns>
+	**************************************************************************************************/
+	Vector2D& GetPosition();
 
     /**************************************************************************************************
      * <summary>Sets a position.</summary>
@@ -218,14 +220,14 @@ class State : public IUpdatable {
      * <remarks>Casey Ugone, 9/3/2012.</remarks>
      * <returns>The velocity.</returns>
      **************************************************************************************************/
-    Vector2D GetVelocity();
+    const Vector2D& GetVelocity() const;
 
-    /**************************************************************************************************
-     * <summary>Gets the velocity.</summary>
-     * <remarks>Casey Ugone, 9/3/2012.</remarks>
-     * <returns>The velocity.</returns>
-     **************************************************************************************************/
-    Vector2D GetVelocity() const;
+	/**************************************************************************************************
+	* <summary>Gets the velocity.</summary>
+	* <remarks>Casey Ugone, 9/3/2012.</remarks>
+	* <returns>The velocity.</returns>
+	**************************************************************************************************/
+	Vector2D& GetVelocity();
 
     /**************************************************************************************************
      * <summary>Sets a velocity.</summary>
@@ -239,14 +241,14 @@ class State : public IUpdatable {
      * <remarks>Casey Ugone, 9/3/2012.</remarks>
      * <returns>The acceleration.</returns>
      **************************************************************************************************/
-    Vector2D GetAcceleration() const;
+    const Vector2D& GetAcceleration() const;
 
     /**************************************************************************************************
      * <summary>Gets the acceleration.</summary>
      * <remarks>Casey Ugone, 9/3/2012.</remarks>
      * <returns>The acceleration.</returns>
      **************************************************************************************************/
-    Vector2D GetAcceleration();
+    Vector2D& GetAcceleration();
 
     /**************************************************************************************************
      * <summary>Sets an acceleration.</summary>
@@ -492,7 +494,7 @@ class State : public IUpdatable {
     PhysicsMaterial _mat;
 
     /// <summary> The collision shape </summary>
-    Shape* _collision_shape;
+    std::unique_ptr<Shape> _collision_shape;
 
     /// <summary> The default velocity damper </summary>
     static const double DEFAULT_DAMPER_VALUE;
