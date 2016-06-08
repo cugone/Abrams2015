@@ -31,7 +31,7 @@ std::weak_ptr<ALLEGRO_BITMAP> BitmapCache::GetBitmap(const std::string& filename
 
     //If found, return it.
     if(_iter != _cache.end()) {
-        return _iter->second;        
+        return _iter->second;
     }
 
     auto temp_bitmap = al_load_bitmap(filename.c_str());
