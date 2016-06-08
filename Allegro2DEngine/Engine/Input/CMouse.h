@@ -44,237 +44,48 @@ public:
     **************************************************************************************************/
     explicit Mouse(ALLEGRO_DISPLAY& parent_display);
 
-    //TODO: Uncomment Mouse functions after testing window.
-    /**************************************************************************************************
-     * <summary>Creates a mouse with a custom pointer.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <param name="image"> [in] If non-null, the image.</param>
-     * <param name="focusX">The focus x coordinate.</param>
-     * <param name="focusY">The focus y coordinate.</param>
-     * <returns>null if it fails, else a pointer to a Mouse.</returns>
-     **************************************************************************************************/
-    //static Mouse* CreateMouse(ALLEGRO_DISPLAY* parent_display, Sprite* image, int focusX, int focusY);
-
-    //TODO: Uncomment Mouse functions after testing window.
-    /**************************************************************************************************
-     * <summary>Creates a mouse.</summary>
-     * <remarks>Casey Ugone, 1/2/2013.</remarks>
-     * <param name="image"> [in,out] If non-null, the image.</param>
-     * <param name="focus_coordinates">The focus coordinates.</param>
-     * <returns>null if it fails, else a pointer to a Mouse.</returns>
-     **************************************************************************************************/
-    //static Mouse* CreateMouse(ALLEGRO_DISPLAY* parent_display, Sprite* image, const a2de::Vector2D& focus_coordinates);
-
     /**************************************************************************************************
      * <summary>Destructor.</summary>
      * <remarks>Casey Ugone, 7/28/2011.</remarks>
      **************************************************************************************************/
     ~Mouse();
 
-    //TODO: Uncomment Mouse functions after testing window.
     /**************************************************************************************************
      * <summary>Gets the sprite of the mouse image.</summary>
      * <remarks>Casey Ugone, 7/28/2011.</remarks>
      * <returns>null if it fails, else the sprite.</returns>
      **************************************************************************************************/
-    //Sprite* GetSprite() const;
+    std::weak_ptr<Sprite> GetSprite() const;
+    std::weak_ptr<Sprite> GetSprite();
 
     /**************************************************************************************************
      * <summary>Gets position as a 4D Vector.</summary>
      * <remarks>Casey Ugone, 10/25/2014.</remarks>
      * <returns>The position.</returns>
      **************************************************************************************************/
-    const Vector4D& GetPosition4d() const;
+    const Vector4D& GetPosition() const;
 
     /**************************************************************************************************
      * <summary>Gets position as a 4D Vector.</summary>
      * <remarks>Casey Ugone, 10/25/2014.</remarks>
      * <returns>The position.</returns>
      **************************************************************************************************/
-    Vector4D& GetPosition4d();
-
-    /**************************************************************************************************
-     * <summary>Gets the position as a Vector3D object.</summary>
-     * <remarks>Casey Ugone, 1/2/2013.</remarks>
-     * <returns>The position 3d.</returns>
-     **************************************************************************************************/
-    Vector3D GetPosition3d() const;
-
-    /**************************************************************************************************
-     * <summary>Gets the position as a Vector3D object.</summary>
-     * <remarks>Casey Ugone, 1/2/2013.</remarks>
-     * <returns>The position 3d.</returns>
-     **************************************************************************************************/
-    Vector3D GetPosition3d();
-
-    /**************************************************************************************************
-     * <summary>Gets the position as a Vector2D object.</summary>
-     * <remarks>Casey Ugone, 1/2/2013.</remarks>
-     * <returns>The position 2d.</returns>
-     **************************************************************************************************/
-    Vector2D GetPosition2d() const;
-
-    /**************************************************************************************************
-     * <summary>Gets the position as a Vector2D object.</summary>
-     * <remarks>Casey Ugone, 1/2/2013.</remarks>
-     * <returns>The position 2d.</returns>
-     **************************************************************************************************/
-    Vector2D GetPosition2d();
-
-    /**************************************************************************************************
-     * <summary>Get x coordinate.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The x coordinate.</returns>
-     **************************************************************************************************/
-    int GetX() const;
-
-    /**************************************************************************************************
-     * <summary>Get x coordinate.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The x coordinate.</returns>
-     **************************************************************************************************/
-    int GetX();
-
-    /**************************************************************************************************
-     * <summary>Get y coordinate.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The y coordinate.</returns>
-     **************************************************************************************************/
-    int GetY() const;
-
-    /**************************************************************************************************
-     * <summary>Get y coordinate.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The y coordinate.</returns>
-     **************************************************************************************************/
-    int GetY();
-
-    /**************************************************************************************************
-     * <summary>Get the mouse wheel's vertical wheel value.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The mouse wheel value..</returns>
-     **************************************************************************************************/
-    int GetZ() const;
-
-    /**************************************************************************************************
-     * <summary>Get the mouse wheel's vertical wheel value.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The mouse wheel value..</returns>
-     **************************************************************************************************/
-    int GetZ();
-
-    /**************************************************************************************************
-     * <summary>Get the mouse wheel's horizontal value.</summary>
-     * <remarks>Casey Ugone, 10/12/2014.</remarks>
-     * <returns>The w.</returns>
-     **************************************************************************************************/
-    int GetW() const;
-
-    /**************************************************************************************************
-     * <summary>Get the mouse wheel's horizontal value.</summary>
-     * <remarks>Casey Ugone, 10/12/2014.</remarks>
-     * <returns>The w.</returns>
-     **************************************************************************************************/
-    int GetW();
+    Vector4D& GetPosition();
 
     /**************************************************************************************************
      * <summary>Gets mickeys as a 4D Vector.</summary>
      * <remarks>Casey Ugone, 10/25/2014.</remarks>
      * <returns>The mickeys.</returns>
      **************************************************************************************************/
-    const Vector4D& GetMickeys4d() const;
+    const Vector4D& GetMickeys() const;
 
     /**************************************************************************************************
      * <summary>Gets mickeys as a 4D Vector.</summary>
      * <remarks>Casey Ugone, 10/25/2014.</remarks>
      * <returns>The mickeys.</returns>
      **************************************************************************************************/
-    Vector4D& GetMickeys4d();
-
-    /**************************************************************************************************
-     * <summary>Gets the mickeys as a Vector3D object.</summary>
-     * <remarks>Casey Ugone, 1/2/2013.</remarks>
-     * <returns>The mickeys.</returns>
-     **************************************************************************************************/
-    Vector3D GetMickeys3d() const;
-
-    /**************************************************************************************************
-     * <summary>Gets the mickeys as a Vector3D object.</summary>
-     * <remarks>Casey Ugone, 1/2/2013.</remarks>
-     * <returns>The mickeys.</returns>
-     **************************************************************************************************/
-    Vector3D GetMickeys3d();
-
-    /**************************************************************************************************
-     * <summary>Gets mickeys 2d.</summary>
-     * <remarks>Casey Ugone, 10/11/2014.</remarks>
-     * <returns>The mickeys 2d.</returns>
-     **************************************************************************************************/
-    Vector2D GetMickeys2d() const;
-
-    /**************************************************************************************************
-     * <summary>Gets mickeys 2d.</summary>
-     * <remarks>Casey Ugone, 10/11/2014.</remarks>
-     * <returns>The mickeys 2d.</returns>
-     **************************************************************************************************/
-    Vector2D GetMickeys2d();
-
-    /**************************************************************************************************
-     * <summary>Gets the change in x coordinates between Updates.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The mickey x coordinate.</returns>
-     **************************************************************************************************/
-    int GetMickeyX() const;
-
-    /**************************************************************************************************
-     * <summary>Gets the change in x coordinates between Updates.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The mickey x coordinate.</returns>
-     **************************************************************************************************/
-    int GetMickeyX();
-
-    /**************************************************************************************************
-     * <summary>Gets the change in y coordinates between Updates..</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The mickey y coordinate.</returns>
-     **************************************************************************************************/
-    int GetMickeyY() const;
-
-    /**************************************************************************************************
-     * <summary>Gets the change in y coordinates between Updates..</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The mickey y coordinate.</returns>
-     **************************************************************************************************/
-    int GetMickeyY();
-
-    /**************************************************************************************************
-     * <summary>Gets the vertical change in mouse wheel position between Updates.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The mickey z coordinate.</returns>
-     **************************************************************************************************/
-    int GetMickeyZ() const;
-
-    /**************************************************************************************************
-     * <summary>Gets the vertical change in mouse wheel position between Updates.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The mickey z coordinate.</returns>
-     **************************************************************************************************/
-    int GetMickeyZ();
-
-    /**************************************************************************************************
-     * <summary>Gets the horizontal change in mouse wheel position between Updates.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The mickey w coordinate.</returns>
-     **************************************************************************************************/
-    int GetMickeyW() const;
-
-    /**************************************************************************************************
-     * <summary>Gets the horizontal change in mouse wheel position between Updates.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The mickey w coordinate.</returns>
-     **************************************************************************************************/
-    int GetMickeyW();
-
+    Vector4D& GetMickeys();
+	
     /**************************************************************************************************
      * <summary>Gets the focus as a Vector2D object.</summary>
      * <remarks>Casey Ugone, 1/2/2013.</remarks>
@@ -288,35 +99,7 @@ public:
      * <returns>The focus.</returns>
      **************************************************************************************************/
     Vector2D& GetFocus();
-
-    /**************************************************************************************************
-     * <summary>Gets the focus x coordinate.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The focus x coordinate.</returns>
-     **************************************************************************************************/
-	int GetFocusX() const;
-
-    /**************************************************************************************************
-     * <summary>Gets the focus x coordinate.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The focus x coordinate.</returns>
-     **************************************************************************************************/
-    int GetFocusX();
-
-    /**************************************************************************************************
-     * <summary>Gets the focus y coordinate.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The focus y coordinate.</returns>
-     **************************************************************************************************/
-	int GetFocusY() const;
-
-    /**************************************************************************************************
-     * <summary>Gets the focus y coordinate.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <returns>The focus y coordinate.</returns>
-     **************************************************************************************************/
-    int GetFocusY();
-
+	
     /**************************************************************************************************
      * <summary>Gets the number of buttons.</summary>
      * <remarks>Casey Ugone, 7/28/2011.</remarks>
@@ -332,88 +115,18 @@ public:
     int GetNumButtons();
 
     /**************************************************************************************************
-     * <summary>Sets the x coordinate.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <param name="x">The x coordinate.</param>
-     **************************************************************************************************/
-    void SetX(double x);
-
-    /**************************************************************************************************
-     * <summary>Sets the y coordinate.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <param name="y">The y coordinate.</param>
-     **************************************************************************************************/
-    void SetY(double y);
-
-    /**************************************************************************************************
-     * <summary>Sets the z coordinate.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <param name="z">The z coordinate.</param>
-     **************************************************************************************************/
-    void SetZ(double z);
-
-    /**************************************************************************************************
-     * <summary>Sets the w coordinate.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <param name="w">The w coordinate.</param>
-     **************************************************************************************************/
-    void SetW(double w);
-
-    /**************************************************************************************************
-     * <summary>Sets the position.</summary>
-     * <remarks>Casey Ugone, 7/6/2012.</remarks>
-     * <param name="x">The x coordinate.</param>
-     * <param name="y">The y coordinate.</param>
-     **************************************************************************************************/
-    void SetPosition(double x, double y);
-
-    /**************************************************************************************************
-     * <summary>Sets the position.</summary>
-     * <remarks>Casey Ugone, 7/6/2012.</remarks>
-     * <param name="x">The x coordinate.</param>
-     * <param name="y">The y coordinate.</param>
-     * <param name="z">The z coordinate.</param>
-     **************************************************************************************************/
-    void SetPosition(double x, double y, double z);
-
-    /**************************************************************************************************
-     * <summary>Sets the position.</summary>
-     * <remarks>Casey Ugone, 10/11/2014.</remarks>
-     * <param name="x">The x coordinate.</param>
-     * <param name="y">The y coordinate.</param>
-     * <param name="z">The horizontal coordinate of the mouse wheel.</param>
-     * <param name="w">The vertical coordinate of the mouse wheel.</param>
-     **************************************************************************************************/
-    void SetPosition(double x, double y, double z, double w);
-
-    /**************************************************************************************************
-     * <summary>Sets the position.</summary>
-     * <remarks>Casey Ugone, 1/2/2013.</remarks>
-     * <param name="pos">The position as a Vector2D object.</param>
-     **************************************************************************************************/
-    void SetPosition(const a2de::Vector2D& pos);
-
-    /**************************************************************************************************
-     * <summary>Sets the position.</summary>
-     * <remarks>Casey Ugone, 1/2/2013.</remarks>
-     * <param name="pos">The position as a Vector3D object.</param>
-     **************************************************************************************************/
-    void SetPosition(const a2de::Vector3D& pos);
-
-    /**************************************************************************************************
      * <summary>Sets the position.</summary>
      * <remarks>Casey Ugone, 10/11/2014.</remarks>
      * <param name="pos">The position as a Vector4D object.</param>
      **************************************************************************************************/
     void SetPosition(const a2de::Vector4D& pos);
 
-    /**************************************************************************************************
-     * <summary>Sets the focus point.</summary>
-     * <remarks>Casey Ugone, 7/28/2011.</remarks>
-     * <param name="x">The x coordinate.</param>
-     * <param name="y">The y coordinate.</param>
-     **************************************************************************************************/
-	void SetFocus(int x, int y);
+	/**************************************************************************************************
+	 * <summary>Sets the focus.</summary>
+	 * <remarks>Casey Ugone, 6/4/2016.</remarks>
+	 * <param name="pos">The focus point as a Vector2D object.</param>
+	 **************************************************************************************************/
+	void SetFocus(const a2de::Vector2D& pos);
 
     /**************************************************************************************************
      * <summary>Updates the mouse parameters.</summary>
@@ -428,7 +141,7 @@ public:
      * <param name="focusX">The focus x coordinate.</param>
      * <param name="focusY">The focus y coordinate.</param>
      **************************************************************************************************/
-	//void SetImage(Sprite* image, int focusX, int focusY);
+	void SetImage(std::shared_ptr<a2de::Sprite> image, int focusX, int focusY);
 
     /**************************************************************************************************
      * <summary>Query if this object is visible.</summary>
@@ -489,9 +202,8 @@ private:
     /// <summary>The focus location.</summary>
     Vector2D _focus;
 
-    //TODO: Uncomment Mouse functions after testing window.
     /// <summary> The image </summary>
-    //a2de::Sprite* _image;
+    std::weak_ptr<a2de::Sprite> _image;
     
     /// <summary> true to show, false to hide the image</summary>
     bool _isVisible;
@@ -526,19 +238,22 @@ private:
 
     /// <summary> The instance </summary>
     static bool _is_instanced;
-
-    /**************************************************************************************************
-     * <summary>Configs this object.</summary>
-     * <remarks>Casey Ugone, 9/3/2012.</remarks>
-     * <returns>true if it succeeds, false if it fails.</returns>
-     **************************************************************************************************/
-    static bool Config();
-
+	
     /**************************************************************************************************
      * <summary>Initializes this object.</summary>
      * <remarks>Casey Ugone, 10/25/2014.</remarks>
      **************************************************************************************************/
     void Init();
+
+	/**************************************************************************************************
+	 * <summary>Initialises this Mouse.</summary>
+	 * <remarks>Casey Ugone, 6/4/2016.</remarks>
+	 * <param name="parent_display">[in] If non-null, the parent display.</param>
+	 * <param name="image">			The image.</param>
+	 * <param name="focus">			The focus.</param>
+	 * <param name="cursor_id">		Identifier for the cursor.</param>
+	 **************************************************************************************************/
+	void Init(const ALLEGRO_DISPLAY& parent_display, const std::string& file, const a2de::Vector2D& focus, ALLEGRO_SYSTEM_MOUSE_CURSOR cursor_id);
 
     /**************************************************************************************************
      * <summary>Deinitializes this object.</summary>
