@@ -95,19 +95,8 @@ public:
      **************************************************************************************************/
     void SetMouseEnterCallback(const std::function<bool(ALLEGRO_EVENT*)> enterdisplay_event_callback);
 
-    /**************************************************************************************************
-     * <summary>Gets the mouse.</summary>
-     * <remarks>Casey Ugone, 10/25/2014.</remarks>
-     * <returns>null if it fails, else the mouse.</returns>
-     **************************************************************************************************/
-    //const Mouse* const GetMouse() const;
-
-    /**************************************************************************************************
-     * <summary>Gets the mouse.</summary>
-     * <remarks>Casey Ugone, 10/25/2014.</remarks>
-     * <returns>null if it fails, else the mouse.</returns>
-     **************************************************************************************************/
-    //Mouse* const GetMouse();
+	const a2de::Mouse* GetMouse() const;
+	a2de::Mouse* GetMouse();
 
 protected:
 private:

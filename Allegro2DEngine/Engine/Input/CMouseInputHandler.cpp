@@ -72,13 +72,13 @@ void MouseInputHandler::SetMouseLeaveCallback(const std::function<bool(ALLEGRO_E
 void MouseInputHandler::SetMouseEnterCallback(const std::function<bool(ALLEGRO_EVENT*)> enterdisplay_event_callback) {
     _enterdisplay_event_callback = enterdisplay_event_callback;
 }
-//
-//const Mouse* const MouseInputHandler::GetMouse() const {
-//    return _mouse.get();
-//}
-//
-//Mouse* const MouseInputHandler::GetMouse() {
-//    return const_cast<Mouse*>(static_cast<const MouseInputHandler&>(*this).GetMouse());
-//}
+
+const a2de::Mouse* a2de::MouseInputHandler::GetMouse() const {
+	return _mouse.get();
+}
+
+a2de::Mouse* a2de::MouseInputHandler::GetMouse() {
+	return const_cast<a2de::Mouse*>(static_cast<const MouseInputHandler&>(*this).GetMouse());
+}
 
 A2DE_END
