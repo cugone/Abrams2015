@@ -39,16 +39,28 @@ void KeyboardInputHandler::SetKeyUpCallback(const std::function<bool(ALLEGRO_EVE
     _keyup_event_callback = keyup_callback;
 }
 
+bool KeyboardInputHandler::KeyDown(int keycode) const {
+	return !_previous_keys[keycode] && _current_keys[keycode];
+}
+
 bool KeyboardInputHandler::KeyDown(int keycode) {
-    return !_previous_keys[keycode] && _current_keys[keycode];
+	return static_cast<const KeyboardInputHandler&>(*this).KeyDown(keycode);
+}
+
+bool KeyboardInputHandler::KeyPress(int keycode) const {
+	return _previous_keys[keycode] && _current_keys[keycode];
 }
 
 bool KeyboardInputHandler::KeyPress(int keycode) {
-    return _previous_keys[keycode] && _current_keys[keycode];
+	return static_cast<const KeyboardInputHandler&>(*this).KeyPress(keycode);
+}
+
+bool KeyboardInputHandler::KeyUp(int keycode) const {
+	return _previous_keys[keycode] && !_current_keys[keycode];
 }
 
 bool KeyboardInputHandler::KeyUp(int keycode) {
-    return _previous_keys[keycode] && !_current_keys[keycode];
+	return static_cast<const KeyboardInputHandler&>(*this).KeyUp(keycode);
 }
 
 void KeyboardInputHandler::Update() {

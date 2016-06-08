@@ -66,7 +66,8 @@ public:
      * <param name="keycode">The keycode.</param>
      * <returns>true if it is, false if it is not.</returns>
      **************************************************************************************************/
-    bool KeyDown(int keycode);
+    bool KeyDown(int keycode) const;
+	bool KeyDown(int keycode);
 
     /**************************************************************************************************
     * <summary>Queries whether or not the key is held down.</summary>
@@ -74,7 +75,8 @@ public:
     * <param name="keycode">The keycode.</param>
     * <returns>true if it is, false if it is not.</returns>
      **************************************************************************************************/
-    bool KeyPress(int keycode);
+	bool KeyPress(int keycode) const;
+	bool KeyPress(int keycode);
 
     /**************************************************************************************************
     * <summary>Queries whether or not the key has just been released.</summary>
@@ -82,7 +84,8 @@ public:
     * <param name="keycode">The keycode.</param>
     * <returns>true if it is, false if it is not.</returns>
      **************************************************************************************************/
-    bool KeyUp(int keycode);
+	bool KeyUp(int keycode) const;
+	bool KeyUp(int keycode);
 
     /**************************************************************************************************
      * <summary>Updates the keyboard state.</summary>
