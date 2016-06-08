@@ -47,21 +47,22 @@ void RenderManager::RenderObject(const Sprite& sprite) {
 
 void RenderManager::RenderObject(const Shape& shape, bool filled, ALLEGRO_BITMAP* texture) {
     //shape->Render(al_get_backbuffer(_display_context));
-    std::vector<Vertex> verts = shape.GetVerticies();
+    auto& verts = shape.GetVerticies();
     std::vector<ALLEGRO_VERTEX> allegro_verts;
+	allegro_verts.reserve(verts.size());
     for(const auto& v : verts) {
         auto p = a2de::Math::ToScreenScale(v.GetPosition());
         auto uv = v.GetUV();
         auto c = v.GetColor();
         allegro_verts.push_back(
-                        ALLEGRO_VERTEX{
+                        std::move(ALLEGRO_VERTEX{
                             static_cast<float>(p.GetX()),
                             static_cast<float>(p.GetY()),
                             static_cast<float>(p.GetZ()),
                             static_cast<float>(uv.GetX()),
                             static_cast<float>(uv.GetY()),
                             c
-                        });
+                        }));
     }
     switch(shape.GetShapeType()) {
         case Shape::ShapeType::Point: {
