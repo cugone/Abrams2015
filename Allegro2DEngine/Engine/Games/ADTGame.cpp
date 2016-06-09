@@ -124,8 +124,10 @@ void a2de::Game::MainLoop() {
 }
 
 void a2de::Game::Run(int argc, char** argv) {
-    if(this->Initialize(argc, argv)) MainLoop();
+    bool game_init = a2de::Game::Initialize(argc, argv);
+    if(game_init && this->Initialize(argc, argv)) MainLoop();
     this->CleanUp();
+    a2de::Game::CleanUp();
 }
 
 bool a2de::Game::Initialize(int /*argc*/, char** /*argv*/) {
