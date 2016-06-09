@@ -20,11 +20,11 @@ bool a2de_init() {
     bool install_keyboard_result = system_installed && al_install_keyboard();
     bool install_mouse_result = system_installed && al_install_mouse();
     bool install_joystick_result = system_installed && al_install_joystick();
-    bool result = system_init_result || image_init_result ||
-        primitives_init_result || font_init_result || ttf_init_result ||
-        install_audio_result || acodec_init_result ||
-        native_dialog_init_result || install_keyboard_result ||
-        install_mouse_result || install_joystick_result;
+    bool result = system_init_result && image_init_result &&
+        primitives_init_result && font_init_result && ttf_init_result &&
+        install_audio_result && acodec_init_result &&
+        native_dialog_init_result && install_keyboard_result &&
+        install_mouse_result && install_joystick_result;
 
     std::atexit(a2de::a2de_deinit);
 
